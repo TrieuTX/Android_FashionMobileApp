@@ -3,8 +3,10 @@ package com.example.fashionandroidapp.screen.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fashionandroidapp.data.model.BannerAdvertisement
 import com.example.fashionandroidapp.data.model.Product
 import com.example.fashionandroidapp.data.model.Category
+import com.example.fashionandroidapp.data.repository.BannerAdvertisementRepository
 import com.example.fashionandroidapp.data.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -50,4 +52,16 @@ class ProductViewModel @Inject constructor(private val repository: ProductReposi
 //            repository.deleteProduct(product)
 //        }
 //    }
+}
+
+@HiltViewModel
+class BannerAdvertisementViewModel @Inject constructor(private val repository: BannerAdvertisementRepository) : ViewModel() {
+//    val categories: StateFlow<List<Product>> = repository.allProducts
+//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    fun getAllBannerAdvertisements(): Flow<List<BannerAdvertisement>> {
+        println("getAllBannerAdvertisement")
+        return repository.getAllBannerAdvertisement()
+    }
+
 }

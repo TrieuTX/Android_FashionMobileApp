@@ -3,7 +3,10 @@ package com.example.fashionandroidapp.di
 import android.content.Context
 import androidx.room.Room
 import com.example.fashionandroidapp.data.local.AppDatabase
+import com.example.fashionandroidapp.data.local.BannerAdvertisementDao
 import com.example.fashionandroidapp.data.local.ProductDao
+import com.example.fashionandroidapp.data.model.BannerAdvertisement
+import com.example.fashionandroidapp.data.repository.BannerAdvertisementRepository
 import com.example.fashionandroidapp.data.repository.ProductRepository
 import dagger.Module
 import dagger.Provides
@@ -22,8 +25,18 @@ object AppModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "product_db"
+            "app_db"
         ).build()
+    }
+
+    @Provides
+    fun provideBannerAdvertisementDao(database: AppDatabase) : BannerAdvertisementDao {
+        return database.bannerAdvertisementDao()
+    }
+
+    @Provides
+    fun provideBannerAdvertisementRepository(dao: BannerAdvertisementDao): BannerAdvertisementRepository {
+        return BannerAdvertisementRepository(dao)
     }
 
     @Provides

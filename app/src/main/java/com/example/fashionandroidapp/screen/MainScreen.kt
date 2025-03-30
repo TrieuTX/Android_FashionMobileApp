@@ -42,6 +42,7 @@ import com.example.fashionandroidapp.screen.cart.CartScreen
 import com.example.fashionandroidapp.screen.categories.CategoriesScreen
 import com.example.fashionandroidapp.screen.favorite.FavoritesScreen
 import com.example.fashionandroidapp.screen.home.HomeScreen
+import com.example.fashionandroidapp.screen.home.ProductByCategoryScreen
 import com.example.fashionandroidapp.screen.profile.ProfileScreen
 import com.example.fashionandroidapp.ui.theme.icon_Color
 
@@ -100,11 +101,15 @@ fun MainScreen() {
         }
     ) { paddingValues ->
         NavHost(navController = navController, startDestination = "homeScreen", modifier = Modifier.padding(paddingValues)) {
-            composable("homeScreen") { HomeScreen() }
+            composable("homeScreen") { HomeScreen(navController) }
             composable("favoritesScreen") { FavoritesScreen(navController) }
             composable("categoriesScreen") { CategoriesScreen(navController) }
             composable("cartScreen") { CartScreen(navController) }
             composable("profileScreen") { ProfileScreen(navController) }
+            composable("productByCategoryScreen/{itemId}") { backStackEntry ->
+                val itemId = backStackEntry.arguments?.getString("itemId") ?: "Unknown"
+                ProductByCategoryScreen(navController, itemId)
+            }
         }
     }
 }

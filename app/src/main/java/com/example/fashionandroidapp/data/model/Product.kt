@@ -14,6 +14,3 @@ data class Product(
     val category: Category
 )
 
-enum class Category {
-    Clothing, Shoes, Bags, Lingerie, Watch, Hoodies
-}

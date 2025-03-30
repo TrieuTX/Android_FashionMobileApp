@@ -2,7 +2,9 @@ package com.example.fashionandroidapp.screen.home
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,40 +55,40 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import androidx.room.Dao
 import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
 import com.example.fashionandroidapp.R
 import com.example.fashionandroidapp.ui.theme.background_Color
 import com.example.fashionandroidapp.ui.theme.icon_Color
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    //AppTheme(darkTheme = true) {
-    HomeScreen()
-    //}
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun Preview() {
+//    HomeScreen()
+//}
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
-
+fun HomeScreen(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(0.dp)
     ) {
         SearchBar()
         SwipeViewWithIndicator(
-            numberPage = 5,
             modifier = Modifier
                 .height(250.dp)
                 .padding(10.dp)
         )
 
-        LazyGridCategories()
+        LazyGridCategories(navController)
     }
 }
 
@@ -146,7 +148,7 @@ fun SearchBar() {
 }
 
 @Composable
-fun LazyGridCategories(viewModel: ProductViewModel = hiltViewModel()) {
+fun LazyGridCategories(navController: NavController ,viewModel: ProductViewModel = hiltViewModel()) {
     val categories by viewModel.getAllCategories().collectAsState(initial = emptyList())
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -165,6 +167,9 @@ fun LazyGridCategories(viewModel: ProductViewModel = hiltViewModel()) {
                     .clip(RoundedCornerShape(5.dp))
                     .shadow(elevation = 1.dp , shape = RoundedCornerShape(1.dp))
                     .padding(2.dp)
+                    .clickable {
+                        navController.navigate("productByCategoryScreen/$categoryName")
+                    }
             ) {
                 val products by viewModel.get4ProductsByCategory(categoryName).collectAsState(initial = emptyList())
                 LazyVerticalGrid(
@@ -217,8 +222,9 @@ fun LazyGridCategories(viewModel: ProductViewModel = hiltViewModel()) {
 
 
 @Composable
-fun SwipeViewWithIndicator(numberPage: Int, modifier: Modifier) {
-    val pagerState = rememberPagerState(initialPage = 0) { numberPage }
+fun SwipeViewWithIndicator(modifier: Modifier, viewModel: BannerAdvertisementViewModel= hiltViewModel()) {
+    val bannerAdvertisements by viewModel.getAllBannerAdvertisements().collectAsState(initial = emptyList())
+    val pagerState = rememberPagerState(initialPage = 0) { bannerAdvertisements.size }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -230,8 +236,9 @@ fun SwipeViewWithIndicator(numberPage: Int, modifier: Modifier) {
                 .weight(1f)
                 .fillMaxWidth()
         ) { page ->
+            //ImageFromUrl(bannerAdvertisements[page].imageUrl)
             RoundedImageWithShadow(
-                url = "https://bizweb.dktcdn.net/100/439/387/articles/web-eng-1350x900.jpg?v=1668057046127",
+                url = bannerAdvertisements[page].imageUrl,
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(20.dp)),
@@ -239,7 +246,7 @@ fun SwipeViewWithIndicator(numberPage: Int, modifier: Modifier) {
         }
         // Custom Indicator
         CustomPagerIndicator(
-            pageCount = numberPage,
+            pageCount = bannerAdvertisements.size,
             currentPage = pagerState.currentPage
         )
     }
@@ -281,4 +288,16 @@ fun RoundedImageWithShadow(url: String, modifier: Modifier) {
             modifier = Modifier.fillMaxSize()
         )
     }
+}
+
+@Composable
+fun ImageFromUrl(imageUrl: String) {
+    Image(
+        painter = rememberAsyncImagePainter(imageUrl),
+        contentDescription = "Loaded Image",
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp),
+        contentScale = ContentScale.Crop
+    )
 }

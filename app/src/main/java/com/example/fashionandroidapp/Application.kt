@@ -1,7 +1,10 @@
 package com.example.fashionandroidapp
 
 import android.app.Application
+import com.example.fashionandroidapp.data.local.BannerAdvertisementDao
 import com.example.fashionandroidapp.data.local.ProductDao
+import com.example.fashionandroidapp.data.model.BannerAdvertisement
+import com.example.fashionandroidapp.data.repository.BannerAdvertisementRepository
 import com.example.fashionandroidapp.data.repository.ProductRepository
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
@@ -13,17 +16,25 @@ import javax.inject.Inject
 @HiltAndroidApp
 class Application : Application() {
     @Inject
-    lateinit var repository: ProductRepository
+    lateinit var productRepository: ProductRepository
     @Inject
     lateinit var productDao: ProductDao
+
+    @Inject
+    lateinit var bannerAdvertisementRepository: BannerAdvertisementRepository
+    @Inject
+    lateinit var bannerAdvertisementDao: BannerAdvertisementDao
+
     override fun onCreate() {
         super.onCreate()
         CoroutineScope(Dispatchers.IO).launch {
             delay(100)
-            //if (repository.isDatabaseEmpty()) {
+
             productDao.clearAll()
-            repository.insertDefaultProducts()
-           //}
+            productRepository.insertDefaultProducts()
+
+            bannerAdvertisementDao.clearAll()
+            bannerAdvertisementRepository.insertDefaultBannerAdvertisement()
         }
     }
 }
