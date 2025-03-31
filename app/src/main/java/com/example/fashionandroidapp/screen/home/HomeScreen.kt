@@ -1,7 +1,8 @@
 package com.example.fashionandroidapp.screen.home
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.content.Context
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,19 +17,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -44,28 +41,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import androidx.room.Dao
 import coil3.compose.AsyncImage
-import coil3.compose.rememberAsyncImagePainter
 import com.example.fashionandroidapp.R
 import com.example.fashionandroidapp.ui.theme.background_Color
 import com.example.fashionandroidapp.ui.theme.icon_Color
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 //@Preview(showBackground = true)
 //@Composable
@@ -89,6 +79,7 @@ fun HomeScreen(navController: NavController) {
         )
 
         LazyGridCategories(navController)
+
     }
 }
 
@@ -183,11 +174,16 @@ fun LazyGridCategories(navController: NavController ,viewModel: ProductViewModel
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .aspectRatio(1f / 1f)
-                                .background(Color.Blue, shape = RoundedCornerShape(6.dp)),
+                                .aspectRatio(1f / 1f),
+                                //.background(Color.Blue, shape = RoundedCornerShape(6.dp)),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = products[product].name)
+                            ImageFromAssets(
+                                fileName = products[product].imageUrl,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(RoundedCornerShape(6.dp))
+                            )
                         }
                     }
                 }
@@ -237,12 +233,19 @@ fun SwipeViewWithIndicator(modifier: Modifier, viewModel: BannerAdvertisementVie
                 .fillMaxWidth()
         ) { page ->
             //ImageFromUrl(bannerAdvertisements[page].imageUrl)
-            RoundedImageWithShadow(
-                url = bannerAdvertisements[page].imageUrl,
+//            RoundedImageWithShadow(
+//                url = bannerAdvertisements[page].imageUrl,
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .clip(RoundedCornerShape(20.dp)),
+//            )
+
+            ImageFromAssets(
+                fileName = bannerAdvertisements[page].imageUrl,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(RoundedCornerShape(20.dp)),
-                )
+                    .clip(RoundedCornerShape(20.dp))
+            )
         }
         // Custom Indicator
         CustomPagerIndicator(
@@ -291,13 +294,19 @@ fun RoundedImageWithShadow(url: String, modifier: Modifier) {
 }
 
 @Composable
-fun ImageFromUrl(imageUrl: String) {
-    Image(
-        painter = rememberAsyncImagePainter(imageUrl),
-        contentDescription = "Loaded Image",
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp),
-        contentScale = ContentScale.Crop
-    )
+fun ImageFromAssets(fileName: String, modifier: Modifier) {
+    val context: Context = LocalContext.current
+    val assetManager = context.assets
+    val inputStream = assetManager.open(fileName)
+    val bitmap = BitmapFactory.decodeStream(inputStream)
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            bitmap = bitmap.asImageBitmap(), contentDescription = "Image from Assets",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
 }

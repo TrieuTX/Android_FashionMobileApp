@@ -1,5 +1,5 @@
 package com.example.fashionandroidapp.data.model
 
 enum class Category {
-    Clothing, Shoes, Bags, Lingerie, Watch, Hoodies
+    Basketball, Running, Football, Golf, Training, Tennis
 }

@@ -1,6 +1,7 @@
 package com.example.fashionandroidapp.data.repository
 
 import androidx.lifecycle.LiveData
+import com.example.fashionandroidapp.R
 import com.example.fashionandroidapp.data.local.BannerAdvertisementDao
 import com.example.fashionandroidapp.data.local.ProductDao
 import com.example.fashionandroidapp.data.model.BannerAdvertisement
@@ -26,12 +27,10 @@ class BannerAdvertisementRepository @Inject constructor(private val bannerAdvert
 
     suspend fun insertDefaultBannerAdvertisement() {
         val defaultProducts = listOf(
-            BannerAdvertisement(imageUrl = "https://static.vecteezy.com/system/resources/previews/008/174/590/non_2x/fashion-advertising-web-banner-illustration-vector.jpg"),
-            BannerAdvertisement(imageUrl = "https://bizweb.dktcdn.net/100/439/387/articles/web-eng-1350x900.jpg?v=1668057046127"),
-            BannerAdvertisement(imageUrl = "https://img.freepik.com/free-vector/flat-design-fashion-week-facebook-cover_23-2151084422.jpg"),
-            BannerAdvertisement(imageUrl = "https://imgur.com/zYxDCQT"),
-            BannerAdvertisement(imageUrl = "https://bizweb.dktcdn.net/100/439/387/articles/web-eng-1350x900.jpg?v=1668057046127"),
-            BannerAdvertisement(imageUrl = "https://bizweb.dktcdn.net/100/439/387/articles/web-eng-1350x900.jpg?v=1668057046127")
+            BannerAdvertisement(imageUrl = "image/banner/5.jpg"),
+            BannerAdvertisement(imageUrl = "image/banner/4.jpg"),
+            BannerAdvertisement(imageUrl = "image/banner/3.jpg"),
+            BannerAdvertisement(imageUrl = "image/banner/1.webp")
         )
         bannerAdvertisementDao.insertBannerAdvertisementList(defaultProducts)
     }
