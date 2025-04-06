@@ -6,9 +6,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -65,10 +70,9 @@ fun CartScreen (navController: NavController, cartViewModel: CartViewModel = hil
             modifier = Modifier.padding(start = 20.dp, top = 10.dp)
         )
         LazyColumn(
-            modifier = Modifier.
-            padding(start = 20.dp, end = 20.dp, top = 20.dp ),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
-
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+            contentPadding = PaddingValues(vertical = 5.dp)
         ) {
             items(cartProducts.size) { cartProduct ->
                 //val product = productViewModel.getProductById(cartProducts[cartProduct].id)
@@ -85,7 +89,7 @@ fun CartScreen (navController: NavController, cartViewModel: CartViewModel = hil
                         price = it.price.toString(),
                         onLessClick = {
                             cartViewModel.checkAndDecreaseProductToCart(productId)
-                                      },
+                        },
                         onMoreClick = {
                             cartViewModel.checkAndIncreaseProductToCart(productId)
                         }
