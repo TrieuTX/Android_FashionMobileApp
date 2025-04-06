@@ -2,9 +2,11 @@ package com.example.fashionandroidapp
 
 import android.app.Application
 import com.example.fashionandroidapp.data.local.BannerAdvertisementDao
+import com.example.fashionandroidapp.data.local.CartProductDao
 import com.example.fashionandroidapp.data.local.ProductDao
 import com.example.fashionandroidapp.data.model.BannerAdvertisement
 import com.example.fashionandroidapp.data.repository.BannerAdvertisementRepository
+import com.example.fashionandroidapp.data.repository.CartProductRepository
 import com.example.fashionandroidapp.data.repository.ProductRepository
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +26,12 @@ class Application : Application() {
     lateinit var bannerAdvertisementRepository: BannerAdvertisementRepository
     @Inject
     lateinit var bannerAdvertisementDao: BannerAdvertisementDao
+
+    @Inject
+    lateinit var cartProductDao: CartProductDao
+
+    @Inject
+    lateinit var cartProductRepository: CartProductRepository
 
     override fun onCreate() {
         super.onCreate()

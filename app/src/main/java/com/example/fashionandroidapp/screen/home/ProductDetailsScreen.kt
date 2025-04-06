@@ -44,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.fashionandroidapp.R
 import com.example.fashionandroidapp.data.model.Product
+import com.example.fashionandroidapp.screen.cart.CartViewModel
 import com.example.fashionandroidapp.ui.theme.icon_Color
 
 //@Preview(showBackground = true)
@@ -53,12 +54,12 @@ import com.example.fashionandroidapp.ui.theme.icon_Color
 //}
 
 @Composable
-fun ProductDetailsScreen(id: String, navController: NavController, viewModel: ProductViewModel = hiltViewModel()) {
+fun ProductDetailsScreen(id: String, navController: NavController, productViewModel: ProductViewModel = hiltViewModel(), cartViewModel: CartViewModel = hiltViewModel() ) {
     val productId = id.toInt()
     var product by remember { mutableStateOf<Product?>(null) }
 
     LaunchedEffect(productId) {
-        product = viewModel.getProductById(productId)
+        product = productViewModel.getProductById(productId)
     }
     Box(modifier = Modifier
         .fillMaxSize()) {
@@ -147,12 +148,12 @@ fun ProductDetailsScreen(id: String, navController: NavController, viewModel: Pr
                         width = 128.dp
                     )
                     .clickable {
-
+                        cartViewModel.checkAndIncreaseProductToCart(productId)
                     }
             ){
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center  // 👈 Canh giữa cả ngang và dọc
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "Add to cart",
@@ -183,7 +184,7 @@ fun ProductDetailsScreen(id: String, navController: NavController, viewModel: Pr
             ){
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center  // 👈 Canh giữa cả ngang và dọc
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "Buy Now",

@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Room
 import com.example.fashionandroidapp.data.local.AppDatabase
 import com.example.fashionandroidapp.data.local.BannerAdvertisementDao
+import com.example.fashionandroidapp.data.local.CartProductDao
 import com.example.fashionandroidapp.data.local.ProductDao
 import com.example.fashionandroidapp.data.model.BannerAdvertisement
 import com.example.fashionandroidapp.data.repository.BannerAdvertisementRepository
+import com.example.fashionandroidapp.data.repository.CartProductRepository
 import com.example.fashionandroidapp.data.repository.ProductRepository
 import dagger.Module
 import dagger.Provides
@@ -47,5 +49,15 @@ object AppModule {
     @Provides
     fun provideProductRepository(dao: ProductDao): ProductRepository {
         return ProductRepository(dao)
+    }
+
+    @Provides
+    fun provideCartProductDao(database: AppDatabase) : CartProductDao {
+        return database.cartProductDao()
+    }
+
+    @Provides
+    fun provideCartProductRepository(dao:  CartProductDao): CartProductRepository {
+        return CartProductRepository(dao)
     }
 }

@@ -56,7 +56,6 @@ import com.example.fashionandroidapp.screen.home.ListProduct as ListProduct
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductByCategoryScreen(itemId: String, navController: NavController ) {
-    Log.i("Xuan Trieu ", "XuanTrieu 1 ")
     Box(Modifier.fillMaxSize()){
         Image(
             painter = painterResource(id = R.drawable.background),
@@ -81,7 +80,6 @@ fun ProductByCategoryScreen(itemId: String, navController: NavController ) {
 
 @Composable
 fun ListProduct(itemId: String, modifier: Modifier,navController: NavController, viewModel: ProductViewModel = hiltViewModel()) {
-    //val items = (1..10).map { "Item$it" }
     val products by viewModel.getProductsByCategory(itemId).collectAsState(initial = emptyList())
 
     LazyVerticalGrid(
@@ -104,7 +102,6 @@ fun ListProduct(itemId: String, modifier: Modifier,navController: NavController,
                         .fillMaxWidth()
                         .aspectRatio(1f)
                         .clickable {
-                            Log.i("Xuan Trieu ", "XuanTrieu: " + products[product].id)
                             navController.navigate("productDetailsScreen/$productId")
                         }
                 ){

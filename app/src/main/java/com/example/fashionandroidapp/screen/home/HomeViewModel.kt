@@ -35,10 +35,6 @@ class ProductViewModel @Inject constructor(private val repository: ProductReposi
         return list;
     }
 
-
-//    private val _product = mutableStateOf<Product?>(null)
-//    val product: State<Product?> = _product
-
     suspend fun getProductById(id: Int): Product? {
         return repository.getProductById(id)
     }

@@ -2,6 +2,7 @@ package com.example.fashionandroidapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val background_Color_2 = Color(0xFFE5EBFC)
 val icon_Color = Color(0xFF004CFF)
 val background_Color = Color(0xFFDFE9FF)
 
