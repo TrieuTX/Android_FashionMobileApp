@@ -1,5 +1,7 @@
 package com.example.fashionandroidapp.screen.home
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,8 +35,12 @@ class ProductViewModel @Inject constructor(private val repository: ProductReposi
         return list;
     }
 
-    fun  getNameProduct(product: Product) : String{
-        return product.name
+
+//    private val _product = mutableStateOf<Product?>(null)
+//    val product: State<Product?> = _product
+
+    suspend fun getProductById(id: Int): Product? {
+        return repository.getProductById(id)
     }
 
     fun countProductsByCategory(category: String): LiveData<Int> {

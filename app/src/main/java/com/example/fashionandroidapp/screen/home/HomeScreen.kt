@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -56,6 +59,7 @@ import coil3.compose.AsyncImage
 import com.example.fashionandroidapp.R
 import com.example.fashionandroidapp.ui.theme.background_Color
 import com.example.fashionandroidapp.ui.theme.icon_Color
+import kotlinx.coroutines.delay
 
 //@Preview(showBackground = true)
 //@Composable
@@ -221,6 +225,18 @@ fun LazyGridCategories(navController: NavController ,viewModel: ProductViewModel
 fun SwipeViewWithIndicator(modifier: Modifier, viewModel: BannerAdvertisementViewModel= hiltViewModel()) {
     val bannerAdvertisements by viewModel.getAllBannerAdvertisements().collectAsState(initial = emptyList())
     val pagerState = rememberPagerState(initialPage = 0) { bannerAdvertisements.size }
+    val interactionSource = remember { MutableInteractionSource() }
+
+    // Check if user is interacting (scrolling/touching)
+    val isUserInteracting by interactionSource.collectIsDraggedAsState()
+    // Auto-switch pages using LaunchedEffect
+    LaunchedEffect(Unit) {
+        while (!isUserInteracting) {
+            delay(4000) // Switch every 3 seconds
+            val nextPage = (pagerState.currentPage + 1) % bannerAdvertisements.size
+            pagerState.animateScrollToPage(nextPage)
+        }
+    }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -232,14 +248,6 @@ fun SwipeViewWithIndicator(modifier: Modifier, viewModel: BannerAdvertisementVie
                 .weight(1f)
                 .fillMaxWidth()
         ) { page ->
-            //ImageFromUrl(bannerAdvertisements[page].imageUrl)
-//            RoundedImageWithShadow(
-//                url = bannerAdvertisements[page].imageUrl,
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .clip(RoundedCornerShape(20.dp)),
-//            )
-
             ImageFromAssets(
                 fileName = bannerAdvertisements[page].imageUrl,
                 modifier = Modifier

@@ -20,6 +20,9 @@ interface ProductDao {
     @Query("SELECT COUNT(*) FROM product_table WHERE category = :category")
     fun countProductsByCategory(category: String): LiveData<Int>
 
+    @Query("SELECT * FROM product_table WHERE id = :productId")
+    suspend fun getProductById(productId: Int): Product?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProduct(product: Product)
 

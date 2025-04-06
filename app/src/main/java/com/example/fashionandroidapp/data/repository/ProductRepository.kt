@@ -24,6 +24,8 @@ class ProductRepository @Inject constructor(private val productDao: ProductDao) 
         return productDao.countProductsByCategory(category)
     }
 
+    suspend fun getProductById(id: Int): Product? = productDao.getProductById(id)
+
     suspend fun insertProduct(product: Product) {
         productDao.insertProduct(product)
     }

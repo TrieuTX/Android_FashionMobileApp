@@ -30,7 +30,11 @@ class BannerAdvertisementRepository @Inject constructor(private val bannerAdvert
             BannerAdvertisement(imageUrl = "image/banner/5.jpg"),
             BannerAdvertisement(imageUrl = "image/banner/4.jpg"),
             BannerAdvertisement(imageUrl = "image/banner/3.jpg"),
-            BannerAdvertisement(imageUrl = "image/banner/1.webp")
+            BannerAdvertisement(imageUrl = "image/banner/2.jpg"),
+            BannerAdvertisement(imageUrl = "image/banner/9.jpg"),
+            BannerAdvertisement(imageUrl = "image/banner/8.jpg"),
+            BannerAdvertisement(imageUrl = "image/banner/6.jpg"),
+            BannerAdvertisement(imageUrl = "image/banner/7.jpg")
         )
         bannerAdvertisementDao.insertBannerAdvertisementList(defaultProducts)
     }

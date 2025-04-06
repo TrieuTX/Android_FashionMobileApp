@@ -43,6 +43,7 @@ import com.example.fashionandroidapp.screen.categories.CategoriesScreen
 import com.example.fashionandroidapp.screen.favorite.FavoritesScreen
 import com.example.fashionandroidapp.screen.home.HomeScreen
 import com.example.fashionandroidapp.screen.home.ProductByCategoryScreen
+import com.example.fashionandroidapp.screen.home.ProductDetailsScreen
 import com.example.fashionandroidapp.screen.profile.ProfileScreen
 import com.example.fashionandroidapp.ui.theme.icon_Color
 
@@ -78,7 +79,7 @@ fun MainScreen() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconCustom(id = R.drawable.appbar_homeenable,
-                            isEnabled = (currentRoute == "homeScreen"),
+                            isEnabled = (currentRoute == "homeScreen" || currentRoute == "productByCategoryScreen/{itemId}"),
                             onClick = { navController.navigate("homeScreen") })
                         IconCustom(
                             id = R.drawable.appbar_favoriteenable,
@@ -108,8 +109,13 @@ fun MainScreen() {
             composable("profileScreen") { ProfileScreen(navController) }
             composable("productByCategoryScreen/{itemId}") { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getString("itemId") ?: "Unknown"
-                ProductByCategoryScreen(navController, itemId)
+                ProductByCategoryScreen(itemId, navController)
             }
+            composable("productDetailsScreen/{productId}") { backStackEntry ->
+                val productId = backStackEntry.arguments?.getString("productId") ?: "Unknown"
+                ProductDetailsScreen(productId, navController)
+            }
+
         }
     }
 }
