@@ -36,7 +36,7 @@ class ProductRepository @Inject constructor(private val productDao: ProductDao) 
 
     suspend fun insertDefaultProducts() {
         val defaultProducts = listOf(
-            Product(id = 1, name = "LeBron NXXT Genisus QS EP", price = 120.0, imageUrl = "image/product/Basketball/6.png", category = Category.Basketball),
+            Product(id = 1, name = "LeBron NXXT Genisus QS EP", price = 8.004, imageUrl = "image/product/Basketball/6.png", category = Category.Basketball),
             Product(id = 2, name = "LeBron XXII 'Currency' EP", price = 5.869, imageUrl = "image/product/Basketball/1.png", category = Category.Basketball),
             Product(id = 3,name = "Ja 2 'Foundation' EP", price = 3.519, imageUrl = "image/product/Basketball/2.png", category = Category.Basketball),
             Product(id = 4,name = "Tatum 3 PF 'Zen'", price = 3.669, imageUrl = "image/product/Basketball/3.png", category = Category.Basketball),

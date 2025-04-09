@@ -47,6 +47,8 @@ import com.example.fashionandroidapp.screen.home.ImageFromAssets
 import com.example.fashionandroidapp.screen.home.ProductViewModel
 import com.example.fashionandroidapp.ui.theme.background_Color_2
 import com.example.fashionandroidapp.ui.theme.icon_Color
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 //@Preview(showBackground = true)
 //@Composable
@@ -54,7 +56,7 @@ import com.example.fashionandroidapp.ui.theme.icon_Color
 //    CartScreen1()
 //}
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen (navController: NavController, cartViewModel: CartViewModel = hiltViewModel(), productViewModel: ProductViewModel = hiltViewModel()) {
@@ -86,7 +88,7 @@ fun CartScreen (navController: NavController, cartViewModel: CartViewModel = hil
                         quantity = cartProducts[cartProduct].quantity.toString(),
                         imageUrl = it.imageUrl,
                         name = it.name,
-                        price = it.price.toString(),
+                        price = (it.price * cartProducts[cartProduct].quantity).roundToFixed(3),
                         onLessClick = {
                             cartViewModel.checkAndDecreaseProductToCart(productId)
                         },
@@ -203,4 +205,8 @@ fun IconCustom(id: Int, onClick: () -> Unit) {
         contentDescription = "Home",
         tint = icon_Color
     )
+}
+
+fun Double.roundToFixed(decimals: Int): String {
+    return "%.${decimals}f".format(this)
 }
