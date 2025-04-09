@@ -26,6 +26,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -148,72 +150,86 @@ fun LazyGridCategories(navController: NavController ,viewModel: ProductViewModel
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(start = 6.dp, end = 6.dp),
+        contentPadding = PaddingValues(start = 6.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         items(categories.size) { category ->
             val categoryName = categories[category]
             val productCount by viewModel.countProductsByCategory(categoryName).observeAsState(0)
-            Box(
+            Card(
+                shape = RoundedCornerShape(10.dp),
+                elevation = CardDefaults.cardElevation(4.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(165f / 192f)
-                    .clip(RoundedCornerShape(5.dp))
-                    .shadow(elevation = 1.dp , shape = RoundedCornerShape(1.dp))
-                    .padding(2.dp)
                     .clickable {
                         navController.navigate("productByCategoryScreen/$categoryName")
                     }
-            ) {
-                val products by viewModel.get4ProductsByCategory(categoryName).collectAsState(initial = emptyList())
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2), // Grid con: 2 cột
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(start = 5.dp, top = 5.dp, end = 5.dp, bottom = 5.dp),
-                    horizontalArrangement = Arrangement.spacedBy(5.dp),
-                    verticalArrangement = Arrangement.spacedBy(5.dp)
-                ) {
-                    items(products.size) { product ->
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(1f / 1f),
-                                //.background(Color.Blue, shape = RoundedCornerShape(6.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            ImageFromAssets(
-                                fileName = products[product].imageUrl,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .clip(RoundedCornerShape(6.dp))
-                            )
-                        }
-                    }
-                }
-                Text(
-                    text = categoryName,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Monospace,
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(start = 5.dp, bottom = 4.dp)
-                )
+            )
+            {
                 Box(
                     modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(end = 6.dp, bottom = 6.dp)
-                        .background(color = background_Color, shape = RoundedCornerShape(6.dp))
-                ){
+                        .fillMaxSize()
+                ) {
+                    val products by viewModel.get4ProductsByCategory(categoryName)
+                        .collectAsState(initial = emptyList())
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2), // Grid con: 2 cột
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(
+                            start = 5.dp,
+                            top = 5.dp,
+                            end = 5.dp,
+                            bottom = 5.dp
+                        ),
+                        horizontalArrangement = Arrangement.spacedBy(5.dp),
+                        verticalArrangement = Arrangement.spacedBy(5.dp)
+                    ) {
+                        items(products.size) { product ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(1f / 1f),
+                                //.background(Color.Blue, shape = RoundedCornerShape(6.dp)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                ImageFromAssets(
+                                    fileName = products[product].imageUrl,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(RoundedCornerShape(6.dp))
+                                )
+                            }
+                        }
+                    }
                     Text(
-                        text = productCount.toString(),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Normal,
-                        fontFamily = FontFamily.SansSerif,
+                        text = categoryName,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Monospace,
                         modifier = Modifier
-                            .padding(2.dp)
+                            .align(Alignment.BottomStart)
+                            .padding(start = 5.dp, bottom = 4.dp)
                     )
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(end = 6.dp, bottom = 6.dp)
+                            .background(color = background_Color, shape = RoundedCornerShape(6.dp))
+                    ) {
+                        Text(
+                            text = productCount.toString(),
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = FontFamily.SansSerif,
+                            modifier = Modifier
+                                .padding(2.dp)
+                        )
+                    }
                 }
             }
         }
